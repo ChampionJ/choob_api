@@ -1,0 +1,51 @@
+type Query {
+  getDiscordUser: DiscordUser
+  getTwitchUser: TwitchUser
+  getCommands: [TwitchCustomCommand]
+}
+
+type TwitchCustomCommandInfo {
+  _id: ID!
+  name: String!
+  channel: String!
+}
+
+type TwitchCustomCommand {
+   _id: ID!
+   info: TwitchCustomCommandInfo!
+   alias: String
+   response: String
+  replyInDM: Boolean
+}
+
+type TwitchUser {
+  twitchId: ID!
+  username: String!
+  displayName: String
+}
+
+type DiscordUser {
+  discordId: ID!
+  username: String!
+  avatar: String
+  discriminator: String!
+  guilds: [Guild]
+}
+
+type Guild {
+  id: ID!
+  name: String!
+  icon: String
+  description: String
+  banner: String
+  owner_id: String
+  roles: [Role]
+}
+
+type Role {
+  id: String!
+  name: String!
+  permissions: String!
+  position: Int!
+  color: Int!
+}
