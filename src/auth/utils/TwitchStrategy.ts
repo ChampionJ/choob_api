@@ -18,10 +18,10 @@ export class TwitchStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    const { login: username, display_name: displayName, id: twitchId } = profile;
+    const { login: username, display_name: displayName, id: identifier } = profile;
     const details = {
       displayName,
-      twitchId,
+      identifier,
       username,
       accessToken,
       refreshToken,

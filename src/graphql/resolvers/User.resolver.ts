@@ -13,13 +13,14 @@ import {
 } from '@nestjs/graphql';
 import { GraphQLAuthGuard } from 'src/auth/utils/Guards';
 import { AuthenticationProvider } from 'src/auth/services/auth/auth';
-import { DiscordUser, TwitchCustomCommand, TwitchUser } from 'src/typeorm';
 import { DiscordService } from 'src/discord/discord.service';
 import { DiscordProvider } from 'src/discord/discord';
 import { TwitchProvider } from 'src/twitch/twitch';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TwitchCustomCommandDocument } from 'src/typeorm/entities/TwitchCustomCommands';
+import { DiscordUser } from 'src/typeorm/entities/DiscordUser';
+import { TwitchUser } from 'src/typeorm/entities/TwitchUser';
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
@@ -60,18 +61,11 @@ export class TwitchUserResolver {
     private readonly authService: AuthenticationProvider,
     @Inject('TWITCH_SERVICE')
     private readonly twitchService: TwitchProvider,
-    @InjectModel(TwitchCustomCommand.name)
-    private twitchCustomCommandModel: Model<TwitchCustomCommandDocument>
   ) { }
 
   @Query('getTwitchUser')
   async getTwitchUser(@CurrentUser() user: TwitchUser): Promise<TwitchUser> {
     console.log(user);
     return user;
-  }
-
-  @Query('getCommands')
-  async getCommands(): Promise<TwitchCustomCommand[]> {
-    return this.twitchCustomCommandModel.find({}).exec();
   }
 }

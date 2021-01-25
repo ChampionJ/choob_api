@@ -1,7 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { entities, TwitchCustomCommand, TwitchCustomCommandModel } from './typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
@@ -9,6 +8,9 @@ import { DiscordUserResolver, TwitchUserResolver } from './graphql/resolvers/Use
 import { DiscordModule } from './discord/discord.module';
 import { TwitchModule } from './twitch/twitch.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ChoobResolver } from './graphql/resolvers/Choob.resolver';
+import { UserModule } from './typeorm/entities/UserModule';
+import { TwitchCustomCommand, TwitchCustomCommandModel } from './typeorm/entities/TwitchCustomCommands';
 
 let envFilePath = '.env.development';
 
@@ -38,6 +40,7 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
     //   synchronize: true,
     // }),
     MongooseModule.forRoot(process.env.DB_HOST, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }),
+
     HttpModule,
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
@@ -50,6 +53,6 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
     MongooseModule.forFeature([{ name: TwitchCustomCommand.name, schema: TwitchCustomCommandModel }])
   ],
   controllers: [],
-  providers: [DiscordUserResolver, TwitchUserResolver],
+  providers: [DiscordUserResolver, TwitchUserResolver, ChoobResolver],
 })
 export class AppModule { }
