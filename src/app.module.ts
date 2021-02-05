@@ -4,13 +4,14 @@ import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { DiscordUserResolver, TwitchUserResolver } from './graphql/resolvers/User.resolver';
+import { DiscordUserResolver, TwitchUserResolver, UserResolver } from './graphql/resolvers/User.resolver';
 import { DiscordModule } from './discord/discord.module';
 import { TwitchModule } from './twitch/twitch.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ChoobResolver } from './graphql/resolvers/Choob.resolver';
-import { UserModule } from './typeorm/entities/UserModule';
-import { TwitchCustomCommand, TwitchCustomCommandModel } from './typeorm/entities/TwitchCustomCommands';
+import { UserModule } from './structures/schemas/UserModule';
+import { TwitchCustomCommand, TwitchCustomCommandModel } from './structures/schemas/TwitchCustomCommands';
+import { TwitchUser, TwitchUserSchema } from './structures/schemas/TwitchUser';
 
 let envFilePath = '.env.development';
 
@@ -50,9 +51,10 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
     }),
     DiscordModule,
     TwitchModule,
-    MongooseModule.forFeature([{ name: TwitchCustomCommand.name, schema: TwitchCustomCommandModel }])
+    MongooseModule.forFeature([{ name: TwitchCustomCommand.name, schema: TwitchCustomCommandModel }]),
+    UserModule,
   ],
   controllers: [],
-  providers: [DiscordUserResolver, TwitchUserResolver, ChoobResolver],
+  providers: [DiscordUserResolver, TwitchUserResolver, ChoobResolver, UserResolver],
 })
 export class AppModule { }

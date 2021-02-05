@@ -2,7 +2,7 @@ import { Profile, Strategy } from 'passport-discord';
 import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthenticationProvider } from '../services/auth/auth';
-import { DiscordUserDetails } from 'src/utils/types';
+import { IDiscordUser } from 'src/structures/interfaces/IUser';
 
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy) {
@@ -19,8 +19,8 @@ export class DiscordStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    const { username, discriminator, id: identifier, avatar } = profile;
-    const details: DiscordUserDetails = {
+    const { username, discriminator, id: identifier, avatar, guilds } = profile;
+    const details = {
       username,
       discriminator,
       identifier,

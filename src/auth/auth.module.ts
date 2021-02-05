@@ -5,9 +5,9 @@ import { DiscordStrategy } from './utils/DiscordStrategy';
 import { TwitchStrategy } from './utils/TwitchStrategy';
 import { SessionSerializer } from './utils/Serializer';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserModule } from 'src/typeorm/entities/UserModule';
-import { DiscordUser, DiscordUserSchema } from 'src/typeorm/entities/DiscordUser';
-import { TwitchUser, TwitchUserSchema } from 'src/typeorm/entities/TwitchUser';
+import { UserModule } from 'src/structures/schemas/UserModule';
+import { DiscordUser, DiscordUserSchema } from 'src/structures/schemas/DiscordUser';
+import { TwitchUser, TwitchUserSchema } from 'src/structures/schemas/TwitchUser';
 
 @Module({
   controllers: [AuthController],

@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AuthType } from 'src/structures/interfaces/IUser';
 
-import { DiscordUser, DiscordUserDocument } from 'src/typeorm/entities/DiscordUser';
-import { TwitchUser, TwitchUserDocument } from 'src/typeorm/entities/TwitchUser';
-import { User, UserDocument } from 'src/typeorm/entities/User';
+import { DiscordUser, DiscordUserDocument } from 'src/structures/schemas/DiscordUser';
+import { TwitchUser, TwitchUserDocument } from 'src/structures/schemas/TwitchUser';
+import { User, UserDocument } from 'src/structures/schemas/User';
 // import { DiscordUser, TwitchUser } from '../../../typeorm';
-import { DiscordUserDetails, TwitchUserDetails } from '../../../utils/types';
+import { DiscordAuthUserDetails, TwitchAuthUserDetails } from '../../../utils/types';
 import { AuthenticationProvider } from './auth';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class AuthService implements AuthenticationProvider {
     //@InjectRepository(TwitchUser) private twitchUserRepo: Repository<TwitchUser>
   ) { }
 
-  async validateDiscordUser(details: DiscordUserDetails) {
+  async validateDiscordUser(details: DiscordAuthUserDetails) {
     const { identifier } = details;
     const user = await this.discordUserRepo.findOne({ identifier: identifier });
     if (user) {
@@ -33,7 +34,7 @@ export class AuthService implements AuthenticationProvider {
     return this.createDiscordUser(details);
   }
 
-  createDiscordUser(details: DiscordUserDetails) {
+  createDiscordUser(details: DiscordAuthUserDetails) {
     const user = new this.discordUserRepo(details);
     return user.save();
   }
@@ -42,7 +43,7 @@ export class AuthService implements AuthenticationProvider {
     return this.discordUserRepo.findOne({ identifier: identifier }).exec();
   }
 
-  async validateTwitchUser(details: TwitchUserDetails) {
+  async validateTwitchUser(details: TwitchAuthUserDetails) {
     const { identifier } = details;
     const user = await this.twitchUserRepo.findOne({ identifier: identifier });
     if (user) {
@@ -53,7 +54,7 @@ export class AuthService implements AuthenticationProvider {
     return this.createTwitchUser(details);
   }
 
-  createTwitchUser(details: TwitchUserDetails) {
+  createTwitchUser(details: TwitchAuthUserDetails) {
     const user = new this.twitchUserRepo(details);
     return user.save();
   }
@@ -62,7 +63,7 @@ export class AuthService implements AuthenticationProvider {
     return this.twitchUserRepo.findOne({ identifier: identifier }).exec();
   }
 
-  findUser(authType: string, id: string): Promise<TwitchUser | DiscordUser | undefined> {
+  findUser(authType: AuthType, id: string): Promise<TwitchUser | DiscordUser | undefined> {
     return this.userRepo.findOne({ authType: authType, identifier: id }).exec();
   }
 }

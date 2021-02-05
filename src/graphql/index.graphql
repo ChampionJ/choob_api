@@ -1,32 +1,47 @@
 type Query {
+  getUser: User
   getDiscordUser: DiscordUser
   getTwitchUser: TwitchUser
+  getTwitchUserById(id: ID!): TwitchUser
   getCommands: [TwitchCustomCommand]
-}
-
-type TwitchCustomCommandInfo {
-  _id: ID!
-  name: String!
-  channel: String!
+  getTest: String
 }
 
 type TwitchCustomCommand {
-   _id: ID!
-   info: TwitchCustomCommandInfo!
-   alias: String
-   response: String
+  _id: ID!
+  name: String!
+  channelId: String!
+  channelName: String!
+  alias: String
+  response: String
   replyInDM: Boolean
+}
+type User {
+  authType: String!
+  identifier: ID!
+  username: String!
+  roles: [String]
 }
 
 type TwitchUser {
-  twitchId: ID!
+  authType: String!
+  identifier: ID!
   username: String!
+  roles: [String]
   displayName: String
+  editorInChannels: [TCSEditor]
+}
+type TCSEditor{
+  channelId: ID!
+  userId: String!
+  permissionGroup: ID!
 }
 
 type DiscordUser {
-  discordId: ID!
+  authType: String!
+  identifier: ID!
   username: String!
+  roles: [String]
   avatar: String
   discriminator: String!
   guilds: [Guild]

@@ -19,7 +19,7 @@ import { DiscordProvider } from 'src/discord/discord';
 import { TwitchProvider } from 'src/twitch/twitch';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TwitchCustomCommand, TwitchCustomCommandDocument } from 'src/typeorm/entities/TwitchCustomCommands';
+import { TwitchCustomCommand, TwitchCustomCommandDocument } from 'src/structures/schemas/TwitchCustomCommands';
 import { CurrentUser } from './User.resolver';
 
 @Resolver('Choob')
@@ -53,4 +53,5 @@ export class ChoobResolver {
   async getCommands(): Promise<TwitchCustomCommand[]> {
     return this.twitchCustomCommandModel.find({}).exec();
   }
+
 }

@@ -1,16 +1,17 @@
 
-import { DiscordUser } from 'src/typeorm/entities/DiscordUser';
-import { TwitchUser } from 'src/typeorm/entities/TwitchUser';
-import { DiscordUserDetails, TwitchUserDetails } from '../../../utils/types';
+import { AuthType } from 'src/structures/interfaces/IUser';
+import { DiscordUser } from 'src/structures/schemas/DiscordUser';
+import { TwitchUser } from 'src/structures/schemas/TwitchUser';
+import { DiscordAuthUserDetails, TwitchAuthUserDetails } from '../../../utils/types';
 
 export interface AuthenticationProvider {
-  validateDiscordUser(details: DiscordUserDetails);
-  createDiscordUser(details: DiscordUserDetails);
+  validateDiscordUser(details: DiscordAuthUserDetails);
+  createDiscordUser(details: DiscordAuthUserDetails);
   findDiscordUser(discordId: string): Promise<DiscordUser | undefined>;
 
-  validateTwitchUser(details: TwitchUserDetails);
-  createTwitchUser(details: TwitchUserDetails);
+  validateTwitchUser(details: TwitchAuthUserDetails);
+  createTwitchUser(details: TwitchAuthUserDetails);
   findTwitchUser(twitchId: string): Promise<TwitchUser | undefined>;
 
-  findUser(authType: string, twitchId: string): Promise<TwitchUser | DiscordUser | undefined>;
+  findUser(authType: AuthType, twitchId: string): Promise<TwitchUser | DiscordUser | undefined>;
 }

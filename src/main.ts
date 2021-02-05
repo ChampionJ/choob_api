@@ -16,7 +16,7 @@ async function bootstrap() {
   });
 
 
-  const opts = { url: process.env.DB_HOST }
+  const opts = { url: process.env.DB_HOST, collection: 'choob_api_user_sessions' }
 
   app.use(
     session({
